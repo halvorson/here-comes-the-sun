@@ -2,11 +2,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    //"noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
+    "moduleResolution": "Node",
     "allowJs": true,
   },
   "compileOnSave": true,
