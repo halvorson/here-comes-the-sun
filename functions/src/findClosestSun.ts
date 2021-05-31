@@ -4,9 +4,9 @@ import {
   getCenter,
   computeDestinationPoint,
 } from 'geolib';
-// import axiosRetry from 'axios-retry';
-
-// axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
+import { exponentialDelay } from 'axios-retry';
+/* eslint-disable */
+const axiosRetry = require('axios-retry');
 
 const skyCoverThreshold = 35;
 const testedArray: any[][] = [];
@@ -15,6 +15,19 @@ type GeolibCoordinates = {
   latitude: number;
   longitude: number;
 };
+
+type exponentialOutputType = {
+  cloudyCoords?: GeolibCoordinates;
+  sunnyCoords: GeolibCoordinates;
+  dist?: number;
+};
+
+type findClosestSunType = {
+  closestSun: GeolibCoordinates;
+  testedArray: any[][];
+};
+
+axiosRetry(axios, { retryDelay: exponentialDelay });
 
 const getSkyCoverByLatLong = (coords: GeolibCoordinates) => {
   return new Promise<number>(function (resolve, reject) {
@@ -65,12 +78,6 @@ const getSkyCoverByLatLong = (coords: GeolibCoordinates) => {
 };
 
 // Typescript!!
-
-type exponentialOutputType = {
-  cloudyCoords?: GeolibCoordinates;
-  sunnyCoords: GeolibCoordinates;
-  dist?: number;
-};
 
 // This function should recursively find sun relatively nearby
 // To minimize searches, it doubles the difference each time (a la Gmail timeout refresh)
@@ -189,12 +196,6 @@ const narrowTheSearch = (
       });
     }
   });
-};
-
-// typescript typing
-type findClosestSunType = {
-  closestSun: GeolibCoordinates;
-  testedArray: any[][];
 };
 
 const findClosestSun = (startCoords: GeolibCoordinates, bearing: number) => {

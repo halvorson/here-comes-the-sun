@@ -46,6 +46,7 @@ exports.urlparsing = functions.https.onRequest((req, res) => {
   res.end();
 });
 
+/*
 exports.sunny = functions.https.onRequest((req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.status(200).write(`<!doctype html>
@@ -57,12 +58,23 @@ exports.sunny = functions.https.onRequest((req, res) => {
   findClosestSun(
     { latitude: 37.793792, longitude: -122.475396 },
     343.7087120027676,
-  ).then((closeSunObj) => {
+  ).then((closestSunObj) => {
     res.write(`
-        ${JSON.stringify(closeSunObj)}
+        ${JSON.stringify(closestSunObj)}
       </body>
     </html>
       `);
     res.end();
+  });
+});
+*/
+
+exports.sunny = functions.https.onRequest((req, res) => {
+  res.set('Content-Type', 'json').status(200);
+  findClosestSun(
+    { latitude: 37.793792, longitude: -122.475396 },
+    343.7087120027676,
+  ).then((closestSunObj) => {
+    res.send(closestSunObj);
   });
 });
