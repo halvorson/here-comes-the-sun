@@ -13,6 +13,9 @@ type LocationInputType = {
 };
 
 const Location = ({ location, error }: LocationInputType) => {
+
+  let closestSun: LocationType | undefined;
+
   if (location) {
     const baseUrl =
       "http://localhost:5001/its-always-sunny-somewhere/us-central1/";
@@ -21,23 +24,40 @@ const Location = ({ location, error }: LocationInputType) => {
     queryParams.set("longitude", location.longitude.toString());
     const fullUrl = baseUrl + "sunny?" + queryParams.toString();
     console.log(fullUrl);
-    axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+    axios.defaults.headers.post["Content-Type"] =
+      "application/json;charset=utf-8";
+    axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
     axios.get(fullUrl).then(res => {
-      console.log(res);
+      console.log(res.data);
+      closestSun = res.data.closestSun;
     });
   }
 
   return (
     <div>
       {location ? (
-        <code>
-          Latitude: {location.latitude}, Longitude: {location.longitude}
-        </code>
+        <>
+          <br />
+          <code>
+            Current location: <br />
+            Latitude: {location.latitude}, Longitude: {location.longitude}
+          </code>
+        </>
       ) : (
         <p>Loading...</p>
       )}
       {error && <p className='errorMessage'>Location Error: {error}</p>}
+      {(closestSun) ? (
+        <>
+          <br />
+          <code>
+            Closest Sun: <br />
+            Latitude: {closestSun.latitude}, Longitude: {closestSun.longitude}
+          </code>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
