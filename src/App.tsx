@@ -4,10 +4,17 @@ import "./App.css";
 import useCurrentLocation from "./hooks/useCurrentLocation";
 import { geolocationOptions } from "./constants/geolocationOptions";
 import Location from "./components/Location";
+import useClosestSun from "./hooks/useClosestSun";
+import ClosestSun from "./components/ClosestSun";
 
 function App() {
 
   const { location: currentLocation, error: currentError } = useCurrentLocation(geolocationOptions);
+
+  const closestSunObject = useClosestSun();
+
+  console.log("closestSunObject from App: ");
+  console.log(closestSunObject);
 
   return (
     <div className='App'>
@@ -25,6 +32,7 @@ function App() {
           Learn React
         </a>
         <Location location={currentLocation} error={currentError} />
+        <ClosestSun closestSun={closestSunObject?.closestSun} />
       </header>
     </div>
   );
