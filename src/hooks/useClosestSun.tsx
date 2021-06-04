@@ -17,7 +17,7 @@ type ClosestSunType = {
   testedArray: QueriedLocationType;
 };
 
-const useClosestSun = (options = {}) => {
+const useClosestSun = (orientation : number) => {
   // store object in state
   const [closestSunObject, setClosestSunObject] = useState<ClosestSunType>();
 
@@ -32,6 +32,7 @@ const useClosestSun = (options = {}) => {
       const queryParams = new URLSearchParams();
       queryParams.set("latitude", currentLocation.latitude.toString());
       queryParams.set("longitude", currentLocation.longitude.toString());
+      queryParams.set("bearing", orientation.toString());
       const fullUrl = baseUrl + "sunny?" + queryParams.toString();
       //console.log(fullUrl);
       axios.defaults.headers.post["Content-Type"] =
@@ -42,7 +43,7 @@ const useClosestSun = (options = {}) => {
         setClosestSunObject(res.data);
       });
     }
-  }, [currentLocation]);
+  }, [currentLocation, orientation]);
 
   return closestSunObject;
 };

@@ -12,16 +12,13 @@ type LocationInputType = {
 };
 
 const Location = ({ location, error }: LocationInputType) => {
-
   return (
     <div>
       {location ? (
         <>
           <br />
-          <code>
-            Current location: <br />
-            Latitude: {location.latitude}, Longitude: {location.longitude}
-          </code>
+          Current location: <br />
+          Latitude: {location.latitude}, Longitude: {location.longitude}
         </>
       ) : (
         <p>Loading...</p>

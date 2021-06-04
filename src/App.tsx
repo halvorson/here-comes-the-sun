@@ -13,7 +13,9 @@ function App() {
   const { location: currentLocation, error: currentError } =
     useCurrentLocation(geolocationOptions);
 
-  const closestSunObject = useClosestSun();
+  const [orientation, setOrientation] = useState<number>(360);
+
+  const closestSunObject = useClosestSun(orientation);
 
   const [locationRequested, setLocationRequested] = useState(false);
 
@@ -21,11 +23,17 @@ function App() {
     setLocationRequested(true);
   };
 
+  
   const [orientationRequested, setOrientationRequested] = useState(false);
 
   const requestOrientation = () => {
     setOrientationRequested(true);
+    //setOrientation();
   };
+
+  const setOrientationPassthrough = (orientationNum: number) => {
+    setOrientation(orientationNum);
+  }
 
   const [closestSunRequested, setClosestSunRequested] = useState(false);
 
@@ -39,10 +47,10 @@ function App() {
         {!locationRequested && <button onClick={requestLocation}>Set current location</button>}
         {locationRequested && <Location location={currentLocation} error={currentError} />}
         <br />
-        {locationRequested && <Orientation onClick={requestOrientation} />}
+        {locationRequested && <Orientation onClick={requestOrientation}  onGetOrientation={setOrientationPassthrough} />}
         <br /> 
         {locationRequested && orientationRequested && !closestSunRequested && <button onClick={requestClosestSun}>Find closest sun!</button>}
-        {locationRequested && orientationRequested && closestSunRequested && <ClosestSun closestSun={closestSunObject?.closestSun} />}
+        {locationRequested && orientationRequested && closestSunRequested && <ClosestSun closestSun={closestSunObject?.closestSun}/>}
       </header>
     </div>
   );

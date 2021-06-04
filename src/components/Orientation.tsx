@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const Orientation = (props: { onClick: () => void }) => {
+const Orientation = (props: {
+  onClick: () => void;
+  onGetOrientation: (orientationNum: number) => void;
+}) => {
   //let orientationObject: OrientationType = {};
   const [requestedOrientationPermission, setRequestedOrientationPermission] =
     useState<boolean>(false);
@@ -18,6 +21,7 @@ const Orientation = (props: { onClick: () => void }) => {
       } else {
         setOrientation(orientationNum);
       }
+      props?.onGetOrientation(orientationNum);  
     };
 
     const isIOS =

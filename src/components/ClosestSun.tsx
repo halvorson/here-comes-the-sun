@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 type LocationType = {
   longitude: number;
   latitude: number;
-}
+};
 
 type ClosestSunType = {
-  closestSun?: LocationType
-}
+  closestSun?: LocationType;
+};
 
 /*
 type QueriedLocationType = [LocationType, number];
@@ -20,18 +20,14 @@ type ClosestSunType = {
 }
 */
 
-const ClosestSun = ({ closestSun }: ClosestSunType ) => {
-
-  
+const ClosestSun = ({ closestSun }: ClosestSunType) => {
   return (
     <div>
-      {(closestSun) ? (
+      {closestSun ? (
         <>
           <br />
-          <code>
-            Closest Sun: <br />
-            Latitude: {closestSun.latitude}, Longitude: {closestSun.longitude}
-          </code>
+          Closest Sun: <br />
+          Latitude: {closestSun.latitude}, Longitude: {closestSun.longitude}
         </>
       ) : (
         <p>Loading...</p>
