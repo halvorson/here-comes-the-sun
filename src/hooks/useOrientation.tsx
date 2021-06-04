@@ -43,7 +43,7 @@ const useOrientation = (requestedOrientationPermission?: boolean) => {
               alert("Has to be allowed!");
             }
           })
-          .catch(() => alert("not supported"));
+          .catch((err) => alert(err));
       }
     }
   }, [requestedOrientationPermission]);

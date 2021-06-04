@@ -22,9 +22,7 @@ type ClosestSunType = {
 
 const ClosestSun = ({ closestSun }: ClosestSunType ) => {
 
-  console.log("closestSun from functional component: ");
-  console.log(closestSun);
-
+  
   return (
     <div>
       {(closestSun) ? (
