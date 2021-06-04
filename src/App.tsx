@@ -1,38 +1,48 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useState } from "react";
 import "./App.css";
 import useCurrentLocation from "./hooks/useCurrentLocation";
 import { geolocationOptions } from "./constants/geolocationOptions";
 import Location from "./components/Location";
+
 import useClosestSun from "./hooks/useClosestSun";
 import ClosestSun from "./components/ClosestSun";
 
-function App() {
+import Orientation from "./components/Orientation";
 
-  const { location: currentLocation, error: currentError } = useCurrentLocation(geolocationOptions);
+function App() {
+  const { location: currentLocation, error: currentError } =
+    useCurrentLocation(geolocationOptions);
 
   const closestSunObject = useClosestSun();
 
-  console.log("closestSunObject from App: ");
-  console.log(closestSunObject);
+  const [locationRequested, setLocationRequested] = useState(false);
+
+  const requestLocation = () => {
+    setLocationRequested(true);
+  };
+
+  const [orientationRequested, setOrientationRequested] = useState(false);
+
+  const requestOrientation = () => {
+    setOrientationRequested(true);
+  };
+
+  const [closestSunRequested, setClosestSunRequested] = useState(false);
+
+  const requestClosestSun = () => {
+    setClosestSunRequested(true);
+  };
 
   return (
     <div className='App'>
       <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-        <Location location={currentLocation} error={currentError} />
-        <ClosestSun closestSun={closestSunObject?.closestSun} />
+        {!locationRequested && <button onClick={requestLocation}>Set current location</button>}
+        {locationRequested && <Location location={currentLocation} error={currentError} />}
+        <br />
+        {locationRequested && <Orientation onClick={requestOrientation} />}
+        <br /> 
+        {locationRequested && orientationRequested && !closestSunRequested && <button onClick={requestClosestSun}>Find closest sun!</button>}
+        {locationRequested && orientationRequested && closestSunRequested && <ClosestSun closestSun={closestSunObject?.closestSun} />}
       </header>
     </div>
   );
