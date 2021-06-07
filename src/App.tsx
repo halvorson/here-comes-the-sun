@@ -68,10 +68,10 @@ function App() {
   const sunRequested = () => {
     setClosestSunRequested(true);
     getClosestSun(orientation).then(closestSun => {
-      console.log(closestSun);
+      //console.log(closestSun);
       setClosestSunObject(closestSun);
       const distToSun = currentLocation && closestSun?.closestSun && getDistance(currentLocation, closestSun?.closestSun)/1609.34;
-      console.log("distToSun: " + distToSun);
+      //console.log("distToSun: " + distToSun);
       setDistToSun(distToSun);
     });
   };

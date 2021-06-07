@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+# It's Always Sunny Somewhere
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This was my May project during my "year of coding". I changed the name after making the repo due to the Firebase name space availability.
 
-## Available Scripts
+This is deployed at https://its-always-sunny-somewhere.web.app/
 
-In the project directory, you can run:
+## App Description
 
-### `yarn start`
+This app allows a user to see how far it is until it's sunny based on phone orientation and location. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I built it because I live in the Presidio in San Francisco. It's often super foggy here, but sunny both in Sausalito (3 miles away) and the Mission (~5 miles away, where I used to live). It's used to motivate me to actually get on my bike and ride, since it'll be sunny in just a few miles. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+I also somewhat want to move to Fairfax, so this could help if it's sunny up there a bit.  
 
-### `yarn test`
+## Tech Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Firebase Functions for serverless dev
+  * I originally thought I would have to use a paid API, so wanted to keep my keys hidden. I ended up throwing the algorithm here, and was going to do "backend only"
+  * I also used the local firebase emulator for the first time
+* Recursive promises
+  * My recursive algorithms both required calls to the National Weather Service API, so needed to be written as promises 
+* Typescript
+  * This was honestly a mistake. React components and typescript was a headache, and cost me a week. The Firebase functions side was better 
 
-### `yarn build`
+## "Algorithm" description
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Once the backend has a start location and start direction, it checks the weather 2.5 miles away. If it's cloudy there, it doubles the distance and tries again. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Once it finds sun, it queries between the last cloudy point and the first sunny point, recursively searching midpoints to find the closest sun. It stops when its search points are within ~2 miles of each other. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+It uses a "skyCover" metric from the National Weather Service, which can sometimes say it's cloudy if it's hazy (turns out it's an aviation description). I define "sunny" when Sky Cover < 35%.
 
-### `yarn eject`
+## To-dos
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Make it ask for location AFTER first click
+   * I'm struggling with this because I'm using a hook for useCurrentLocation(), so it's tricky to nest in another useEffect()
+* Clean up the FE code
+   * This was meant to be an afterthought (original project was BE only), but ended up getting pretty gnarly. I originally tried keeping everything in individual hooks, but eventually threw it all in app.jsx
+   * Specifically, pass arguments to functional components with actual types, don't define type at the prop type every time. This is probably "interface", but I haven't figured it out 
+* ? Add a Google Map overlay to show what points I queryied to get the result. I return the full array from the Firebase Function, so should be able to do it entirely FE
+* ? Factor in night. It'll work for clear skies

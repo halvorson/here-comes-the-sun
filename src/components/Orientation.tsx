@@ -62,10 +62,10 @@ const Orientation = (props: {
           <>
             <br />
             {orientationError || (
-              <code>
+              <p>
                 Orientation: <br />
                 {orientation}
-              </code>
+              </p>
             )}
           </>
         ) : (
