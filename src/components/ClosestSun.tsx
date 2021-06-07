@@ -2,32 +2,31 @@ import React from "react";
 import PropTypes from "prop-types";
 
 type LocationType = {
-  longitude: number;
-  latitude: number;
+  longitude?: number ;
+  latitude?: number ;
 };
 
-type ClosestSunType = {
-  closestSun?: LocationType;
-};
 
 /*
 type QueriedLocationType = [LocationType, number];
-
-
-type ClosestSunType = {
-  closestSun: LocationType;
-  testedArray: QueriedLocationType; 
-}
 */
 
-const ClosestSun = ({ closestSun }: ClosestSunType) => {
+type ClosestSunType = {
+  closestSun?: LocationType;
+  distanceToSun?: number; 
+}
+
+const ClosestSun = ( props: ClosestSunType ) => {
+  console.log(props);
   return (
     <div>
-      {closestSun ? (
+      {props ? (
         <>
           <br />
           Closest Sun: <br />
-          Latitude: {closestSun.latitude}, Longitude: {closestSun.longitude}
+          Lat: {props.closestSun?.latitude?.toFixed(5)}, Long: {props.closestSun?.longitude?.toFixed(5)}
+          <br />
+          It's sunny {(typeof props?.distanceToSun === 'number') ? props?.distanceToSun.toFixed(1): null} miles away.
         </>
       ) : (
         <p>Loading...</p>
@@ -38,7 +37,7 @@ const ClosestSun = ({ closestSun }: ClosestSunType) => {
 
 ClosestSun.propTypes = {
   closestSun: PropTypes.object,
-  testedArray: PropTypes.array,
+  distanceToSun: PropTypes.number,
 };
 
 export default ClosestSun;

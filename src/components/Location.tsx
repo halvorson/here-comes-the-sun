@@ -18,7 +18,7 @@ const Location = ({ location, error }: LocationInputType) => {
         <>
           <br />
           Current location: <br />
-          Latitude: {location.latitude}, Longitude: {location.longitude}
+          Lat: {location.latitude.toFixed(5)}, Long: {location.longitude.toFixed(5)}
         </>
       ) : (
         <p>Loading...</p>
